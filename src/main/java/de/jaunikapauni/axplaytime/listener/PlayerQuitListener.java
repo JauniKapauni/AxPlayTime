@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.UUID;
+
 public class PlayerQuitListener implements Listener {
     AxPlayTime reference;
     public PlayerQuitListener(AxPlayTime reference){
@@ -13,7 +15,15 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
-        reference.getPlayTimeManager().getEndTime().put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        UUID uuid = e.getPlayer().getUniqueId();
+        reference.getPlayTimeManager().getEndTime().put(uuid, System.currentTimeMillis());
+        long sessionTime = reference.getPlayTimeManager().getDelta(e.getPlayer());
+        long newTotal = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L) + sessionTime;
+        reference.getPlayTimeManager().getPlaytime().put(uuid, newTotal);
         reference.getPlayTimeManager().savePlaytimeDB(e.getPlayer());
+        reference.getPlayTimeManager().getPlaytime().remove(uuid);
+        reference.getPlayTimeManager().getStartTime().remove(uuid);
+        reference.getPlayTimeManager().getEndTime().remove(uuid);
+
     }
 }

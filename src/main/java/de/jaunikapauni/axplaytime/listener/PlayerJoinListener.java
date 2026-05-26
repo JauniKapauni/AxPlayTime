@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.UUID;
+
 public class PlayerJoinListener implements Listener {
     AxPlayTime reference;
     public PlayerJoinListener(AxPlayTime reference){
@@ -13,6 +15,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
-        reference.getPlayTimeManager().getStartTime().put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        UUID uuid = e.getPlayer().getUniqueId();
+        long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
+        reference.getPlayTimeManager().getPlaytime().put(uuid, saved);
+        reference.getPlayTimeManager().getStartTime().put(uuid, System.currentTimeMillis());
     }
 }
