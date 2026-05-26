@@ -1,0 +1,11 @@
+name: AxPlayTime
+description: $description
+prefix: AxPlayTime
+version: '${version}'
+
+main: de.jaunikapauni.axplaytime.AxPlayTime
+api-version: '26.1.2'
+load: POSTWORLD
+
+authors: [ JauniKapauni ]
+website: https://github.com/JauniKapauni
