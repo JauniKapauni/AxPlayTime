@@ -1,6 +1,10 @@
 # AxPlayTime
 > Minecraft plugin that tracks the playtime of players across multiple servers
 ---
+## Requirements
+- Minecraft Paper 26.1.2 Server
+- MariaDB / MySQL Server
+- PlaceholderAPI
 ## Features
 - Playtime tracking (cross-server)
 ---
