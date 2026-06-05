@@ -26,7 +26,7 @@ public final class AxPlayTime extends JavaPlugin {
         try{
             playTimeManager = new PlayTimeManager(this);
             databaseManager = new DatabaseManager(this);
-            if(databaseManager.initDatabaseTable1()){
+            if(databaseManager.initDatabaseTable1() == false){
                 Bukkit.getLogger().severe("Failed to create db table!");
                 Bukkit.getServer().shutdown();
             }
