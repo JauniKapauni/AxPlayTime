@@ -23,7 +23,7 @@ public class PlayTimeCommand implements CommandExecutor {
         long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
         long currentSessionTime = System.currentTimeMillis() - sessionStart;
         long totalPlaytime = totalSaved + currentSessionTime;
-        p.sendMessage("Your playtime: " + (totalPlaytime / 1000) + "s");
+        p.sendMessage("Your playtime: " + reference.getPlayTimeManager().formatPlaytime(totalPlaytime) + "s");
         return true;
     }
 }
