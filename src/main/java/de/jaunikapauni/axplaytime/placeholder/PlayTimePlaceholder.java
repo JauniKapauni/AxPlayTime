@@ -14,6 +14,7 @@ public class PlayTimePlaceholder extends PlaceholderExpansion {
     public PlayTimePlaceholder(AxPlayTime reference){
         this.reference = reference;
     }
+
     @Override
     public @NotNull String getIdentifier() {
         return reference.getName();
@@ -32,16 +33,16 @@ public class PlayTimePlaceholder extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer p, @NotNull String params){
         if(params.equalsIgnoreCase("playtime")){
-            //long playtime = reference.getPlayTimeManager().loadPlayerPlaytime(p.getUniqueId());
-            //return reference.getPlayTimeManager().formatPlaytime(playtime);
-
             UUID uuid = p.getUniqueId();
-            long totalSaved = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L);
-
-            long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
-            long currentSessionTime = System.currentTimeMillis() - sessionStart;
-            long totalPlaytime = totalSaved + currentSessionTime;
-            return reference.getPlayTimeManager().formatPlaytime(totalPlaytime);
+            if(p.isOnline()){
+                long totalSaved = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L);
+                long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
+                long currentSessionTime = System.currentTimeMillis() - sessionStart;
+                return reference.getPlayTimeManager().formatPlaytime(totalSaved + currentSessionTime);
+            } else {
+                long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
+                return reference.getPlayTimeManager().formatPlaytime(saved);
+            }
         }
         return params;
     }

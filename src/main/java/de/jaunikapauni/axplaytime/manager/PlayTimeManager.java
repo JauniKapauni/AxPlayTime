@@ -16,9 +16,9 @@ public class PlayTimeManager {
     public PlayTimeManager(AxPlayTime reference){
         this.reference = reference;
     }
+
     Map<UUID, Long> playtime = new HashMap<>();
     Map<UUID, Long> startTime = new HashMap<>();
-    Map<UUID, Long> endTime = new HashMap<>();
 
     public Map<UUID, Long> getPlaytime(){
         return playtime;
@@ -26,12 +26,11 @@ public class PlayTimeManager {
     public Map<UUID, Long> getStartTime(){
         return startTime;
     }
-    public Map<UUID, Long> getEndTime(){
-        return endTime;
+
+    public long getDelta(Player p){
+        return System.currentTimeMillis() - startTime.get(p.getUniqueId());
     }
-    public Long getDelta(Player p){
-        return endTime.get(p.getUniqueId()) - startTime.get(p.getUniqueId());
-    }
+
     public void savePlaytimeDB(Player p){
         long totalSave = playtime.getOrDefault(p.getUniqueId(), 0L);
         try(Connection conn = reference.getDatabaseManager().getConnection()){

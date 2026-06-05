@@ -16,14 +16,13 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
         UUID uuid = e.getPlayer().getUniqueId();
-        reference.getPlayTimeManager().getEndTime().put(uuid, System.currentTimeMillis());
+
         long sessionTime = reference.getPlayTimeManager().getDelta(e.getPlayer());
         long newTotal = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L) + sessionTime;
         reference.getPlayTimeManager().getPlaytime().put(uuid, newTotal);
         reference.getPlayTimeManager().savePlaytimeDB(e.getPlayer());
+
         reference.getPlayTimeManager().getPlaytime().remove(uuid);
         reference.getPlayTimeManager().getStartTime().remove(uuid);
-        reference.getPlayTimeManager().getEndTime().remove(uuid);
-
     }
 }
