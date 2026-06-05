@@ -5,6 +5,7 @@ import de.jaunikapauni.axplaytime.listener.PlayerJoinListener;
 import de.jaunikapauni.axplaytime.listener.PlayerQuitListener;
 import de.jaunikapauni.axplaytime.manager.DatabaseManager;
 import de.jaunikapauni.axplaytime.manager.PlayTimeManager;
+import de.jaunikapauni.axplaytime.placeholder.PlayTimePlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,6 +36,10 @@ public final class AxPlayTime extends JavaPlugin {
         getCommand("playtime").setExecutor(new PlayTimeCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new PlayTimePlaceholder(this).register();
+            getLogger().info("Successfully registered " + getName() + " placeholders!");
+        }
     }
 
     @Override

@@ -60,4 +60,14 @@ public class PlayTimeManager {
         }
         return 0L;
     }
+
+    public String formatPlaytime(long millis){
+        long seconds = millis / 1000;
+
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600) / 60;
+        long remainingSeconds = seconds % 60;
+
+        return hours + "h " + minutes + "m " + remainingSeconds + "s";
+    }
 }
