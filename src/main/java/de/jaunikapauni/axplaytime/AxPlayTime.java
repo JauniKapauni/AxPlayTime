@@ -40,6 +40,13 @@ public final class AxPlayTime extends JavaPlugin {
             new PlayTimePlaceholder(this).register();
             getLogger().info("Successfully registered " + getName() + " placeholders!");
         }
+        getLogger().info("");
+        getLogger().info("----------------------------------------");
+        getLogger().info("Name: " + getName());
+        getLogger().info("Version: " + getDescription().getVersion());
+        getLogger().info(String.join("Authors: " + ", ", getDescription().getAuthors()));
+        getLogger().info("----------------------------------------");
+        getLogger().info("");
     }
 
     @Override
