@@ -16,10 +16,13 @@ public class PlayTimeCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        if(!(sender instanceof Player)){
+            return true;
+        }
+
         Player p = (Player) sender;
         UUID uuid = p.getUniqueId();
         long totalSaved = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L);
-
         long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
         long currentSessionTime = System.currentTimeMillis() - sessionStart;
         long totalPlaytime = totalSaved + currentSessionTime;
