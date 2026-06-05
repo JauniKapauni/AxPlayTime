@@ -24,8 +24,9 @@ public final class AxPlayTime extends JavaPlugin {
         // Plugin startup logic
         saveDefaultConfig();
         try{
-            playTimeManager = new PlayTimeManager(this);
             databaseManager = new DatabaseManager(this);
+            playTimeManager = new PlayTimeManager(this);
+
             if(databaseManager.initDatabaseTable1() == false){
                 Bukkit.getLogger().severe("Failed to create db table!");
                 Bukkit.getServer().shutdown();
@@ -33,13 +34,16 @@ public final class AxPlayTime extends JavaPlugin {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         getCommand("playtime").setExecutor(new PlayTimeCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
             new PlayTimePlaceholder(this).register();
             getLogger().info("Successfully registered " + getName() + " placeholders!");
         }
+
         getLogger().info("");
         getLogger().info("----------------------------------------");
         getLogger().info("Name: " + getName());
