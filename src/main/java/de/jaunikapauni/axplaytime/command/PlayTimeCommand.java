@@ -19,8 +19,11 @@ public class PlayTimeCommand implements CommandExecutor {
         if(!(sender instanceof Player)){
             return true;
         }
-
         Player p = (Player) sender;
+        if(!p.hasPermission("axplaytime.playtime")){
+            p.sendMessage("You don't have the permission! [axplaytime.playtime]");
+            return true;
+        }
         UUID uuid = p.getUniqueId();
         long totalSaved = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L);
         long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
