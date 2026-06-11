@@ -27,6 +27,9 @@ database:
   password:
 ```
 ---
+## Commands & Permissions
+- `/playtime` - `axplaytime.playtime`
+---
 ## Support
 Discord: [AxForge](https://discord.gg/rYSxV4daS8)
 ---
