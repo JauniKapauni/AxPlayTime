@@ -1,6 +1,7 @@
 package de.jaunikapauni.axplaytime.listener;
 
 import de.jaunikapauni.axplaytime.AxPlayTime;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -16,8 +17,10 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         UUID uuid = e.getPlayer().getUniqueId();
-        long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
-        reference.getPlayTimeManager().getPlaytime().put(uuid, saved);
-        reference.getPlayTimeManager().getStartTime().put(uuid, System.currentTimeMillis());
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
+            reference.getPlayTimeManager().getPlaytime().put(uuid, saved);
+            reference.getPlayTimeManager().getStartTime().put(uuid, System.currentTimeMillis());
+        });
     }
 }

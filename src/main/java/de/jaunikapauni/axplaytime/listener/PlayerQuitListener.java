@@ -1,6 +1,7 @@
 package de.jaunikapauni.axplaytime.listener;
 
 import de.jaunikapauni.axplaytime.AxPlayTime;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -16,13 +17,13 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
         UUID uuid = e.getPlayer().getUniqueId();
-
-        long sessionTime = reference.getPlayTimeManager().getDelta(e.getPlayer());
-        long newTotal = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L) + sessionTime;
-        reference.getPlayTimeManager().getPlaytime().put(uuid, newTotal);
-        reference.getPlayTimeManager().savePlaytimeDB(e.getPlayer());
-
-        reference.getPlayTimeManager().getPlaytime().remove(uuid);
-        reference.getPlayTimeManager().getStartTime().remove(uuid);
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            long sessionTime = reference.getPlayTimeManager().getDelta(e.getPlayer());
+            long newTotal = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L) + sessionTime;
+            reference.getPlayTimeManager().getPlaytime().put(uuid, newTotal);
+            reference.getPlayTimeManager().savePlaytimeDB(e.getPlayer());
+            reference.getPlayTimeManager().getPlaytime().remove(uuid);
+            reference.getPlayTimeManager().getStartTime().remove(uuid);
+        });
     }
 }
