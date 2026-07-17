@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayTimeManager {
     AxPlayTime reference;
@@ -17,8 +18,8 @@ public class PlayTimeManager {
         this.reference = reference;
     }
 
-    Map<UUID, Long> playtime = new HashMap<>();
-    Map<UUID, Long> startTime = new HashMap<>();
+    Map<UUID, Long> playtime = new ConcurrentHashMap<>();
+    Map<UUID, Long> startTime = new ConcurrentHashMap<>();
 
     public Map<UUID, Long> getPlaytime(){
         return playtime;
