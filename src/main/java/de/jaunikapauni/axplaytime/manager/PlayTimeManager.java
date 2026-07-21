@@ -29,7 +29,7 @@ public class PlayTimeManager {
     }
 
     public long getDelta(Player p){
-        return System.currentTimeMillis() - startTime.get(p.getUniqueId());
+        return System.currentTimeMillis() - startTime.getOrDefault(p.getUniqueId(), System.currentTimeMillis());
     }
 
     public void savePlaytimeDB(Player p){
