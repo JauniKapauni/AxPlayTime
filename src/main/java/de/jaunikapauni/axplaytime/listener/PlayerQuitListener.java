@@ -18,10 +18,9 @@ public class PlayerQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent e){
         UUID uuid = e.getPlayer().getUniqueId();
         Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
-            long sessionTime = reference.getPlayTimeManager().getDelta(e.getPlayer());
+            long sessionTime = reference.getPlayTimeManager().getDelta(uuid);
             long newTotal = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L) + sessionTime;
-            reference.getPlayTimeManager().getPlaytime().put(uuid, newTotal);
-            reference.getPlayTimeManager().savePlaytimeDB(e.getPlayer());
+            reference.getPlayTimeManager().savePlaytimeDB(uuid, newTotal);
             reference.getPlayTimeManager().getPlaytime().remove(uuid);
             reference.getPlayTimeManager().getStartTime().remove(uuid);
         });

@@ -17,10 +17,12 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         UUID uuid = e.getPlayer().getUniqueId();
+        reference.getPlayTimeManager().getStartTime().put(uuid, System.currentTimeMillis());
         Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
             long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
-            reference.getPlayTimeManager().getPlaytime().put(uuid, saved);
-            reference.getPlayTimeManager().getStartTime().put(uuid, System.currentTimeMillis());
+            Bukkit.getScheduler().runTask(reference, () -> {
+                reference.getPlayTimeManager().getPlaytime().put(uuid, saved);
+            });
         });
     }
 }

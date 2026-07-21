@@ -28,17 +28,29 @@ public class PlayTimeManager {
         return startTime;
     }
 
-    public long getDelta(Player p){
-        return System.currentTimeMillis() - startTime.getOrDefault(p.getUniqueId(), System.currentTimeMillis());
+    public long getDelta(UUID uuid){
+        return System.currentTimeMillis() - startTime.getOrDefault(uuid, System.currentTimeMillis());
     }
 
-    public void savePlaytimeDB(Player p){
-        long totalSave = playtime.getOrDefault(p.getUniqueId(), 0L);
+    public void savePlaytimeDB(UUID uuid, long totalSave){
         try(Connection conn = reference.getDatabaseManager().getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("REPLACE INTO players(uuid, playtime) VALUES (?, ?)")){
-                ps.setString(1, p.getUniqueId().toString());
-                ps.setLong(2, totalSave);
-                ps.executeUpdate();
+            try(PreparedStatement select = conn.prepareStatement("SELECT uuid FROM players WHERE uuid = ?")){
+                select.setString(1, uuid.toString());
+                ResultSet rs = select.executeQuery();
+                if(rs.next()){
+                    try(PreparedStatement update = conn.prepareStatement("UPDATE players SET playtime = ? WHERE uuid = ?")){
+                        update.setLong(1, totalSave);
+                        update.setString(2, uuid.toString());
+                        update.executeUpdate();
+                    }
+                } else {
+                    try(PreparedStatement insert = conn.prepareStatement("INSERT INTO players (uuid, playtime) VALUES (?, ?)")){
+                        insert.setString(1, uuid.toString());
+                        insert.setLong(2, totalSave);
+                        insert.executeUpdate();
+                    }
+                }
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -69,5 +81,26 @@ public class PlayTimeManager {
         long remainingSeconds = seconds % 60;
 
         return hours + "h " + minutes + "m " + remainingSeconds + "s";
+    }
+
+    public long getPlayTimeMap(UUID uuid){
+        return playtime.getOrDefault(uuid, 0L);
+    }
+
+    public long getCurrentSessionTime(UUID uuid){
+        return System.currentTimeMillis() - startTime.getOrDefault(uuid, System.currentTimeMillis());
+    }
+
+    public long getTotalPlayTime(UUID uuid){
+        long saved = getPlayTimeMap(uuid);
+        long session = getCurrentSessionTime(uuid);
+        return saved + session;
+    }
+
+    public void saveAll(){
+        for(UUID uuid : playtime.keySet()){
+            long total = getTotalPlayTime(uuid);
+            savePlaytimeDB(uuid, total);
+        }
     }
 }

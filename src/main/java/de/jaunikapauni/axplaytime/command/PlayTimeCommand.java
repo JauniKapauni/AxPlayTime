@@ -25,10 +25,7 @@ public class PlayTimeCommand implements CommandExecutor {
             return true;
         }
         UUID uuid = p.getUniqueId();
-        long totalSaved = reference.getPlayTimeManager().getPlaytime().getOrDefault(uuid, 0L);
-        long sessionStart = reference.getPlayTimeManager().getStartTime().getOrDefault(uuid, System.currentTimeMillis());
-        long currentSessionTime = System.currentTimeMillis() - sessionStart;
-        long totalPlaytime = totalSaved + currentSessionTime;
+        long totalPlaytime = reference.getPlayTimeManager().getTotalPlayTime(uuid);
         p.sendMessage("Your playtime: " + reference.getPlayTimeManager().formatPlaytime(totalPlaytime));
         return true;
     }
