@@ -51,11 +51,17 @@ public final class AxPlayTime extends JavaPlugin {
         getLogger().info(String.join("Authors: " + ", ", getDescription().getAuthors()));
         getLogger().info("----------------------------------------");
         getLogger().info("");
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            playTimeManager.saveAll();
+        }, 20L * 60 * 5, 20L * 60 * 5);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        playTimeManager.saveAll();
         databaseManager.close();
+
     }
 }
