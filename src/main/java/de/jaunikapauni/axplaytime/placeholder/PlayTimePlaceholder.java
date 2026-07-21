@@ -40,8 +40,8 @@ public class PlayTimePlaceholder extends PlaceholderExpansion {
                 long currentSessionTime = System.currentTimeMillis() - sessionStart;
                 return reference.getPlayTimeManager().formatPlaytime(totalSaved + currentSessionTime);
             } else {
-                long saved = reference.getPlayTimeManager().loadPlayerPlaytime(uuid);
-                return reference.getPlayTimeManager().formatPlaytime(saved);
+                long cached = reference.getPlayTimeManager().getPlayTimeMap(uuid);
+                return reference.getPlayTimeManager().formatPlaytime(cached);
             }
         }
         return params;
